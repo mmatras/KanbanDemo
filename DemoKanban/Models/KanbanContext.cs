@@ -2,8 +2,8 @@
 {
     public class KanbanContext
     {
-        public List<Issue> Issues { get; set; }
-        public List<Person> People { get; set; }
+        public List<Issue> Issues { get; set; } = new List<Issue>();
+        public List<Person> People { get; set; } = new List<Person>();
 
 
         public static KanbanContext Data = new KanbanContext
