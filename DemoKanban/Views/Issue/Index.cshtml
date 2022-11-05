@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Issue>
+
+<h1>Issues</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Id)</th>
+            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th>@Html.DisplayNameFor(m => m.Notes)</th>
+            <th>@Html.DisplayNameFor(m => m.State)</th>
+            <th>@Html.DisplayNameFor(m => m.IsUrgent)</th>
+            <th>@Html.DisplayNameFor(m => m.Deadline)</th>
+            <th>@Html.DisplayNameFor(m => m.AssignedTo)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var date = item.Deadline?.ToShortDateString();
+            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : "";
+            <tr>
+                <td>@Html.DisplayFor(m => item.Id)</td>
+                <td>@Html.DisplayFor(m => item.Title)</td>
+                <td>@Html.DisplayFor(m => item.Notes)</td>
+                <td>@Html.DisplayFor(m => item.State)</td>
+                <td>@Html.DisplayFor(m => item.IsUrgent)</td>
+                <td>@Html.DisplayFor(m => date)</td>
+                <td>@Html.DisplayFor(m => assignedTo)</td>
+            </tr>
+        }
+    </tbody>
+
+</table>

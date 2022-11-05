@@ -10,10 +10,10 @@
         {
             People =
             {
-                new Person() { Id = 1, Name = "Daniel" },
-                new Person() { Id = 2, Name = "Marcin" },
-                new Person() { Id = 3, Name = "Jan" },
-                new Person() { Id = 4, Name = "Magdalena" }
+                new Person() { Id = 1, Name = "Daniel", Surname = "Matras", DisplayName = "matras"},
+                new Person() { Id = 2, Name = "Marcin", Surname = "Nowak" },
+                new Person() { Id = 3, Name = "Jan", Surname = "Opolski", DisplayName = "opolski" },
+                new Person() { Id = 4, Name = "Magdalena", Surname = "Dąbrowska", DisplayName = "jdąb" }
             },
             Issues = {
                 new Issue

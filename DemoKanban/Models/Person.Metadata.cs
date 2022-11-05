@@ -10,7 +10,12 @@ namespace DemoKanban.Models
         {
             [Required]
             [MaxLength(100)]
-            public string Name { get; set; }
+            public string Name { get; set; } = "<";
+
+            [Required]
+            [MaxLength(100)]
+            public string Surname { get; set; } = "<empty>";
+            public string DisplayName { get; set; } = "";
         }
     }
 }
