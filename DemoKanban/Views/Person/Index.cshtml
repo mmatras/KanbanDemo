@@ -12,15 +12,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.Surname</td>
-                <td>@item.DisplayName</td>
-            </tr>
-        }
+        <vc:List people="@Model"></vc:List>
     </tbody>
+
+    @*@foreach (var item in Model)
+    {
+        @Html.DisplayFor(m => item, "Person2")
+    }*@
 
 </table>

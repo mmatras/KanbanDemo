@@ -4,8 +4,20 @@ using System.ComponentModel.DataAnnotations;
 namespace DemoKanban.Models
 {
     [ModelMetadataType(typeof(IssueMetadata))]
-    public partial class Issue
+    public partial class Issue : IValidatableObject
     {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var errorList = new List<ValidationResult>();
+
+            if (KanbanContext.Data.Issues.Any(m => m.Title == Title))
+            {
+                errorList.Add(new ValidationResult("Takie zadanie już istnieje", new[] { "Title" }));
+            }
+
+            return errorList;
+        }
+
         public class IssueMetadata
         {
             [Display(Name = "Id")]

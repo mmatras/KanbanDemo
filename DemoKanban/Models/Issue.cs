@@ -4,7 +4,7 @@ namespace DemoKanban.Models
 {
     public partial class Issue
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = 0;
 
         public string Title { get; set; } = ""; 
         

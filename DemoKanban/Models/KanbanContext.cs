@@ -8,7 +8,7 @@
 
         public static KanbanContext Data = new KanbanContext
         {
-            People =
+            People = 
             {
                 new Person() { Id = 1, Name = "Daniel", Surname = "Matras", DisplayName = "matras"},
                 new Person() { Id = 2, Name = "Marcin", Surname = "Nowak" },

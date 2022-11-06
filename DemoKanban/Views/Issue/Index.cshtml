@@ -1,9 +1,20 @@
-﻿@model IEnumerable<Issue>
+﻿@using Microsoft.AspNetCore.Html
+@model IEnumerable<Issue>
 
 <h1>Issues</h1>
 
+@{
+    var error = TempData["errorMessage2"] as string;
+
+    if (!string.IsNullOrEmpty(error))
+    {
+    @await Html.PartialAsync("_ErrorPartial", error)
+    }
+}
+
 <p>
     <a asp-action="Create">Create New</a>
+    @*<a href="@Url.Action("Create")">Create New</a>*@
 </p>
 
 <table class="table">
@@ -16,13 +27,15 @@
             <th>@Html.DisplayNameFor(m => m.IsUrgent)</th>
             <th>@Html.DisplayNameFor(m => m.Deadline)</th>
             <th>@Html.DisplayNameFor(m => m.AssignedTo)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             var date = item.Deadline?.ToShortDateString();
-            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : "";
+            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty 
+                ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
             <tr>
                 <td>@Html.DisplayFor(m => item.Id)</td>
                 <td>@Html.DisplayFor(m => item.Title)</td>
@@ -31,8 +44,20 @@
                 <td>@Html.DisplayFor(m => item.IsUrgent)</td>
                 <td>@Html.DisplayFor(m => date)</td>
                 <td>@Html.DisplayFor(m => assignedTo)</td>
+                <td>@Html.ActionLink("Edytuj", "Edit", new {id = item.Id}) |
+                    @Html.ActionLink("Skasuj", "Delete", new {id = item.Id})
+                </td>
             </tr>
+
         }
     </tbody>
 
 </table>
+
+@section footer {
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - DemoKanban - Test
+        </div>
+    </footer>
+}

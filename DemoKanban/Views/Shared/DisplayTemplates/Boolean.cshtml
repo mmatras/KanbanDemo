@@ -1,0 +1,10 @@
+﻿@model bool?
+
+@{
+    SelectList list = ViewData.ModelMetadata.IsNullableValueType ?
+                new SelectList(new[] { "True", "False", "Not Set" }, Model)
+                :
+                new SelectList(new[] { "True", "False" }, Model);
+
+    @Html.DropDownListFor(m => m, list, new { disabled = "disabled" });
+}

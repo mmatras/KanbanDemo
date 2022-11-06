@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Person>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Name</td>
+        <td>@item.Surname</td>
+        <td>@item.DisplayName</td>
+    </tr>
+}
