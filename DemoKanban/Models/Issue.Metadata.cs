@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DemoKanban.Resources;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace DemoKanban.Models
@@ -25,17 +26,17 @@ namespace DemoKanban.Models
 
             [Required]
             [MaxLength(255)]
-            [Display(Name = "Tytuł")]
+            [Display(Name = "Title", ResourceType = typeof(Resource))]
             public string Title { get; set; } = "";
 
             [Required]
-            [Display(Name = "Notatka")]
+            [Display(Name = "Notes", ResourceType = typeof(Resource))]
             public string Notes { get; set; } = "";
 
             [Display(Name = "Status")]
             public IssueState State { get; set; }
 
-            [Display(Name = "Pilne?")]
+            [Display(Name = "IsUrgent", ResourceType = typeof(Resource))]
             public bool IsUrgent { get; set; }
 
             [Display(Name = "Ostateczny termin")]

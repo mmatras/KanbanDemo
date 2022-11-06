@@ -1,6 +1,10 @@
-﻿using DemoKanban.Models;
+﻿using DemoKanban.Filters;
+using DemoKanban.Models;
+using DemoKanban.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 
 namespace DemoKanban.Controllers
 {
@@ -11,8 +15,23 @@ namespace DemoKanban.Controllers
     //    public IEnumerable<SelectListItem> SelectListPeople { get; set; }
     //}
 
+    [AuditLogFilter]
+    //[Authorize(Roles = "Admin")]
     public class IssueController : Controller
     {
+        private readonly IStringLocalizer<IssueController> _stringLocalizer;
+        private readonly IEmailService _emailService;
+
+        public IssueController(IStringLocalizer<IssueController> stringLocalizer,
+            IEmailService emailService)
+        {
+            _stringLocalizer = stringLocalizer;
+            _emailService = emailService;
+        }
+
+
+        [AuditLogFilter]
+        //[OutputCache()]
         public IActionResult Index()
         {
             var issues = KanbanContext.Data.Issues;
@@ -24,7 +43,7 @@ namespace DemoKanban.Controllers
         public IActionResult Create()
         {
             ViewData["Action"] = "Create";
-            ViewData["SubmitText"] = "Stwórz nowego";
+            ViewData["SubmitText"] = _stringLocalizer["SubmitText_Create"];
             ViewData["People"] = GetPeopleSelectList();
 
             /*
@@ -49,7 +68,7 @@ namespace DemoKanban.Controllers
             }
 
             ViewData["Action"] = "Edit";
-            ViewData["SubmitText"] = "Zapisz zmiany";
+            ViewData["SubmitText"] = _stringLocalizer["SubmitText_Edit"];
             ViewData["People"] = GetPeopleSelectList();
 
             return View(issue);
@@ -95,7 +114,7 @@ namespace DemoKanban.Controllers
             if(!ModelState.IsValid)
             {
                 ViewData["Action"] = "Create";
-                ViewData["SubmitText"] = "Stwórz nowego";
+                ViewData["SubmitText"] = _stringLocalizer["SubmitText_Create"];
                 ViewData["People"] = GetPeopleSelectList();
 
                 return View(issue);
@@ -109,6 +128,8 @@ namespace DemoKanban.Controllers
 
             issue.Id = KanbanContext.Data.Issues.Max(i => i.Id) + 1;
             KanbanContext.Data.Issues.Add(issue);
+
+            _emailService.Send("admin@comarch.pl", $"new issue {issue.Id} was created");
 
             return RedirectToAction("Index");
         }

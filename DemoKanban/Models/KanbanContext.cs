@@ -4,7 +4,7 @@
     {
         public List<Issue> Issues { get; set; } = new List<Issue>();
         public List<Person> People { get; set; } = new List<Person>();
-
+        public List<AuditLog> AuditLog { get; set; } = new List<AuditLog>();
 
         public static KanbanContext Data = new KanbanContext
         {
