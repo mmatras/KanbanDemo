@@ -7,13 +7,15 @@ namespace DemoKanban.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            var ctx = context.HttpContext.RequestServices.GetService<KanbanContext>();
+
             var constroller = context.RouteData.Values["controller"];
             var action = context.RouteData.Values["action"];
 
             var req = context.HttpContext.Request;
             var url = $"{req.Host}${req.Path}";
 
-            KanbanContext.Data.AuditLog.Add(new AuditLog(url, $"c:{constroller} a:{action}", "<anonymous>"));
+            ctx.AuditLog.Add(new AuditLog(url, $"c:{constroller} a:{action}", "<anonymous>"));
         }
     }
 }

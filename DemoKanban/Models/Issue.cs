@@ -13,8 +13,8 @@ namespace DemoKanban.Models
         public bool IsUrgent { get; set; }
         public DateTime? Deadline { get; set; }
 
-        public int? AssignedToId { get; set; }
-        public Person AssignedTo { get; set; } = Person.Empty;
+        public int? AssignedToId { get; set; } 
+        public Person AssignedTo { get; set; }
 
         //public Issue(string title)
         //{

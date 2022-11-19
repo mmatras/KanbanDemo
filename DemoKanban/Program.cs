@@ -1,6 +1,7 @@
 using DemoKanban.Middlewares;
 using DemoKanban.Models;
 using DemoKanban.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,10 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 //builder.Services.AddScoped<IEmailService, FakeEmailService>();
 //builder.Services.AddScoped<IEmailService, EmailService>(sp => new EmailService(sp.GetService<IStringLocalizer>()));
 //builder.Services.AddSingleton<IEmailService, EmailService>();
+
+builder.Services.AddDbContext<KanbanContext>(o =>
+    o.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
+
 
 var app = builder.Build();
 
@@ -36,9 +41,9 @@ app.UseAuthorization();
 
 app.UseGlobalization();
 
-app.Map("/api/minApiIssue", (IEmailService emailService) =>
+app.Map("/api/minApiIssue", (IEmailService emailService, KanbanContext ctx) =>
 {
-    return KanbanContext.Data.Issues;
+    return ctx.Issues;
 });
 
 app.MapIssueEnpints();
@@ -59,5 +64,13 @@ app.MapControllerRoute(
 app.MapControllerRoute(name: "blog_section",
     pattern: "blog/{*topic}",
     defaults: new { controller = "Blog", action = "Index" });
+
+using(var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+{
+    var kanbanContext = serviceScope.ServiceProvider.GetRequiredService<KanbanContext>();
+    kanbanContext.Database.EnsureCreated();
+    kanbanContext.Database.Migrate();
+}
+
 
 app.Run();

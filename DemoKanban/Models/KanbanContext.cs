@@ -1,21 +1,32 @@
-﻿namespace DemoKanban.Models
-{
-    public class KanbanContext
-    {
-        public List<Issue> Issues { get; set; } = new List<Issue>();
-        public List<Person> People { get; set; } = new List<Person>();
-        public List<AuditLog> AuditLog { get; set; } = new List<AuditLog>();
+﻿using Microsoft.EntityFrameworkCore;
 
-        public static KanbanContext Data = new KanbanContext
+namespace DemoKanban.Models
+{
+    public class KanbanContext : DbContext
+    {
+        public KanbanContext(DbContextOptions<KanbanContext> options)
+            : base(options)
         {
-            People = 
-            {
-                new Person() { Id = 1, Name = "Daniel", Surname = "Matras", DisplayName = "matras"},
+
+        }
+
+        //public DbSet<Issue> Issues { get; set; }
+        public DbSet<Issue> Issues => Set<Issue>();
+        public DbSet<Person> People => Set<Person>(); 
+        public DbSet<AuditLog> AuditLog=> Set<AuditLog>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Person>().HasData(
+                new Person() { Id = 1, Name = "Daniel", Surname = "Matras", DisplayName = "matras" },
                 new Person() { Id = 2, Name = "Marcin", Surname = "Nowak" },
                 new Person() { Id = 3, Name = "Jan", Surname = "Opolski", DisplayName = "opolski" },
                 new Person() { Id = 4, Name = "Magdalena", Surname = "Dąbrowska", DisplayName = "jdąb" }
-            },
-            Issues = {
+            );
+
+            modelBuilder.Entity<Issue>().HasData(
                 new Issue
                 {
                     Id = 1,
@@ -23,7 +34,8 @@
                     IsUrgent = true,
                     Deadline = DateTime.Now.AddMonths(3),
                     State = IssueState.Todo,
-                    Notes = "Ten temat musi być bardzo dobrze opanowany"
+                    Notes = "Ten temat musi być bardzo dobrze opanowany",
+                    AssignedToId = 1,
                 },
                 new Issue
                 {
@@ -32,7 +44,8 @@
                     IsUrgent = false,
                     Deadline = DateTime.Now.AddDays(3),
                     State = IssueState.Doing,
-                    Notes = "Rwównież Razor Pages"
+                    Notes = "Rwównież Razor Pages",
+                    AssignedToId = 3
                 },
                 new Issue
                 {
@@ -49,13 +62,7 @@
                     State = IssueState.Done,
                     Notes = "Język SQL jest językiem deklaratywnym"
                 }
-            }
-        };
-
-        static KanbanContext()
-        {
-            Data.Issues[0].AssignedTo = Data.People[0];
-            Data.Issues[1].AssignedTo = Data.People[2];
+            );
         }
     }
 }

@@ -9,9 +9,11 @@ namespace DemoKanban.Models
     {
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            var ctx = validationContext.GetService<KanbanContext>();
+
             var errorList = new List<ValidationResult>();
 
-            if (KanbanContext.Data.Issues.Any(m => m.Title == Title))
+            if (ctx.Issues.Any(m => m.Title == Title))
             {
                 errorList.Add(new ValidationResult("Takie zadanie już istnieje", new[] { "Title" }));
             }

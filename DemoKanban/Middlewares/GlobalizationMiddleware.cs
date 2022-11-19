@@ -13,9 +13,9 @@ namespace DemoKanban.Middlewares
 
         public static IEndpointRouteBuilder MapIssueEnpints(this IEndpointRouteBuilder builder)
         {
-            builder.Map("/api/minApiIssue", (IEmailService emailService) =>
+            builder.Map("/api/minApiIssue", (IEmailService emailService, KanbanContext ctx) =>
             {
-                return KanbanContext.Data.Issues;
+                return ctx.Issues;
             });
 
 
