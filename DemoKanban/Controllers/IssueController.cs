@@ -19,6 +19,13 @@ namespace DemoKanban.Controllers
     //[Authorize(Roles = "Admin")]
     public class IssueController : Controller
     {
+        private readonly KanbanContext context;
+
+        public IssueController(KanbanContext context)
+        {
+            this.context = context;
+        }
+
         //private readonly IStringLocalizer<IssueController> _stringLocalizer;
         //private readonly IEmailService _emailService;
 
@@ -30,14 +37,14 @@ namespace DemoKanban.Controllers
         //}
 
 
-        //[AuditLogFilter]
-        ////[OutputCache()]
-        //public IActionResult Index()
-        //{
-        //    var issues = KanbanContext.Data.Issues;
-            
-        //    return View(issues);
-        //}
+        [AuditLogFilter]
+        //[OutputCache()]
+        public IActionResult Index()
+        {
+            var issues = context.Issues.ToList();
+
+            return View(issues);
+        }
 
         //[HttpGet]
         //public IActionResult Create()
@@ -61,7 +68,7 @@ namespace DemoKanban.Controllers
         //public IActionResult Edit(int id)
         //{
         //    var issue = KanbanContext.Data.Issues.FirstOrDefault(i => i.Id == id);
-            
+
         //    if(issue == null)
         //    {
         //        return RedirectToAction("Error404", "Error");

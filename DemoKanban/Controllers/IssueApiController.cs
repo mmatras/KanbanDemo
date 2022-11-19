@@ -1,5 +1,6 @@
 ﻿using DemoKanban.Filters;
 using DemoKanban.Models;
+using DemoKanban.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,62 +15,75 @@ namespace DemoKanban.Controllers
     [AuditLogFilter]
     public class IssueApiController : ControllerBase
     {
-        //[HttpGet]
-        //public IEnumerable<Issue> Get()
-        //{
-        //    var issues = KanbanContext.Data.Issues;
-        //    return issues;
-        //}
+        private readonly KanbanContext context;
 
-        //[HttpGet("{id}")]
-        //public IActionResult Get(int id)
-        //{
-        //    var issue = KanbanContext.Data.Issues.FirstOrDefault(i => i.Id == id);
-        //    return issue == null ? NotFound() : Ok(issue);
-        //}
+        public IssueApiController(KanbanContext context)
+        {
+            this.context = context;
+        }
 
-        //// POST api/issue
-        //[HttpPost]
-        //public IActionResult Post([FromBody] Issue issue)
-        //{
-        //    if(!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpGet]
+        public IEnumerable<IssueDto> Get()
+        {
+            var issues = context.Issues;
+            List<IssueDto> result = issues.Select(i => new IssueDto
+            {
+                Title = i.Title,
+                /*...*/
+            }).ToList();
 
-        //    if (issue.AssignedToId != null)
-        //    {
-        //        issue.AssignedTo = KanbanContext.Data.People
-        //            .FirstOrDefault(m => m.Id == issue.AssignedToId, Person.Empty);
-        //    }
+            return result;
+        }
 
-        //    issue.Id = KanbanContext.Data.Issues.Max(i => i.Id) + 1;
-        //    KanbanContext.Data.Issues.Add(issue);
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var issue = context.Issues.FirstOrDefault(i => i.Id == id);
+            return issue == null ? NotFound() : Ok(issue);
+        }
 
-        //    return Created($"/api/issue/{issue.Id}", issue);
-        //}
+        // POST api/issue
+        [HttpPost]
+        public IActionResult Post([FromBody] IssueDto issue)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //[HttpPut("{id}")]
-        //public IActionResult Put(int id, [FromBody] Issue issue)
-        //{
-        //    if (id != issue.Id)
-        //        return BadRequest("id in url and in body doesn't match");
+            context.Issues.Add(new Issue
+            {
+                Title = issue.Title,
+            });
+            context.SaveChanges();
 
-        //    var issueToBeUpdated = KanbanContext.Data.Issues.FirstOrDefault(i => i.Id == id);
+            return Created($"/api/issue/{issue.Id}", issue);
+        }
 
-        //    if (issueToBeUpdated == null)
-        //    {
-        //        return NotFound($"object with id:{id} doesn't exits.");
-        //    }
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Issue issue)
+        {
+            if (id != issue.Id)
+                return BadRequest("id in url and in body doesn't match");
 
-        //    issueToBeUpdated.Title = issue.Title;
-        //    issueToBeUpdated.State = issue.State;
-        //    issueToBeUpdated.IsUrgent = issue.IsUrgent;
-        //    issueToBeUpdated.Deadline = issue.Deadline;
-        //    issueToBeUpdated.Notes = issue.Notes;
+            var issueToBeUpdated = context.Issues.FirstOrDefault(i => i.Id == id);
 
-        //    return Ok();
-        //}
+            if (issueToBeUpdated == null)
+            {
+                return NotFound($"object with id:{id} doesn't exits.");
+            }
+
+            issueToBeUpdated.Title = issue.Title;
+            issueToBeUpdated.State = issue.State;
+            issueToBeUpdated.IsUrgent = issue.IsUrgent;
+            issueToBeUpdated.Deadline = issue.Deadline;
+            issueToBeUpdated.Notes = issue.Notes;
+
+            context.Issues.Add(issueToBeUpdated);
+            context.SaveChanges();
+
+            return Ok();
+        }
 
         //// DELETE api/<IssueApiController>/5
         //[HttpDelete("{id}")]
