@@ -19,7 +19,8 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 //builder.Services.AddSingleton<IEmailService, EmailService>();
 
 builder.Services.AddDbContext<KanbanContext>(o =>
-    o.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
+    o.UseLazyLoadingProxies()
+    .UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
 
 
 var app = builder.Build();
@@ -68,9 +69,8 @@ app.MapControllerRoute(name: "blog_section",
 using(var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
 {
     var kanbanContext = serviceScope.ServiceProvider.GetRequiredService<KanbanContext>();
+    //kanbanContext.Database.Migrate();
     kanbanContext.Database.EnsureCreated();
-    kanbanContext.Database.Migrate();
 }
-
 
 app.Run();

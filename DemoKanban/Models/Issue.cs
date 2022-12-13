@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DemoKanban.Models
 {
@@ -6,6 +7,8 @@ namespace DemoKanban.Models
     {
         public int Id { get; set; } = 0;
 
+        [Required]
+        [MaxLength(255)]
         public string Title { get; set; } = ""; 
         
         public string Notes { get; set; } = "";
@@ -13,8 +16,9 @@ namespace DemoKanban.Models
         public bool IsUrgent { get; set; }
         public DateTime? Deadline { get; set; }
 
+        //[ForeignKey("AssignedTo")]
         public int? AssignedToId { get; set; } 
-        public Person AssignedTo { get; set; }
+        public virtual Person AssignedTo { get; set; }
 
         //public Issue(string title)
         //{

@@ -19,6 +19,10 @@ namespace DemoKanban.Models
         {
             base.OnModelCreating(modelBuilder);
 
+
+
+            //modelBuilder.Entity<Person>().HasIndex();
+
             modelBuilder.Entity<Person>().HasData(
                 new Person() { Id = 1, Name = "Daniel", Surname = "Matras", DisplayName = "matras" },
                 new Person() { Id = 2, Name = "Marcin", Surname = "Nowak" },
