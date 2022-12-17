@@ -1,6 +1,7 @@
 using DemoKanban.Middlewares;
 using DemoKanban.Models;
 using DemoKanban.Services;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<KanbanContext>(o =>
     o.UseLazyLoadingProxies()
     .UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
 
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -41,6 +43,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseGlobalization();
+
+app.MapRazorPages();
 
 app.Map("/api/minApiIssue", (IEmailService emailService, KanbanContext ctx) =>
 {

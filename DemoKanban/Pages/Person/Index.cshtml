@@ -1,0 +1,19 @@
+﻿@page "{skip:int?}/{take:int?}"
+@model DemoKanban.Pages.Person.IndexModel
+
+<h1>People</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Display name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <vc:List people="@Model.People"></vc:List>
+    </tbody>
+
+</table>

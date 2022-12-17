@@ -16,6 +16,7 @@ namespace DemoKanban.Filters
             var url = $"{req.Host}${req.Path}";
 
             ctx.AuditLog.Add(new AuditLog(url, $"c:{constroller} a:{action}", "<anonymous>"));
+            ctx.SaveChanges();
         }
     }
 }

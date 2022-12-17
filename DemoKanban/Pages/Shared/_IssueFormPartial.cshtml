@@ -1,0 +1,40 @@
+﻿@model Issue
+
+<form method="post" asp-action="@ViewData["Action"]">
+    @if (ViewData["Action"] == "Edit") {
+        <input type="hidden" asp-for="Id" />
+    }
+
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes"></textarea>
+        <span asp-validation-for="Notes"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="State"></label>
+        <select asp-for="State" asp-items="Html.GetEnumSelectList<IssueState>()"></select>
+        <span asp-validation-for="State"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsUrgent"></label>
+        <input asp-for="IsUrgent" />
+        <span asp-validation-for="IsUrgent"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Deadline"></label>
+        <input type="date" asp-for="Deadline" />
+        <span asp-validation-for="Deadline"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AssignedToId"></label>
+        <select asp-for="AssignedToId" asp-items="@ViewData["People"] as IEnumerable<SelectListItem>"></select>
+        <span asp-validation-for="AssignedToId"></span>
+    </div>
+    <button type="submit">@ViewData["SubmitText"]</button>
+</form>
