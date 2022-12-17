@@ -16,7 +16,7 @@ namespace DemoKanban.Controllers
     //}
 
     [AuditLogFilter]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
     public class IssueController : Controller
     {
         private readonly KanbanContext context;

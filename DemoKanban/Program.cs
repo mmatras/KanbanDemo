@@ -1,6 +1,8 @@
+﻿using DemoKanban.Infrastructure;
 using DemoKanban.Middlewares;
 using DemoKanban.Models;
 using DemoKanban.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,46 @@ builder.Services.AddDbContext<KanbanContext>(o =>
     o.UseLazyLoadingProxies()
     .UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(
+    //o => o.SignIn.RequireConfirmedAccount
+    )
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<KanbanContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Ustawienia hasła:
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Ustawienia blokowania kont:
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // Ustawienia kont:
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = false;
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Ustawienia ciasteczek:
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
+
+
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -40,6 +82,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseGlobalization();
@@ -75,6 +118,12 @@ using(var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateS
     var kanbanContext = serviceScope.ServiceProvider.GetRequiredService<KanbanContext>();
     //kanbanContext.Database.Migrate();
     kanbanContext.Database.EnsureCreated();
+
+    var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+    if(roleManager != null )
+    {
+        await CreateDefaultRoles.CreateRoles(roleManager);
+    }
 }
 
 app.Run();

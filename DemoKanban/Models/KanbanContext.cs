@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoKanban.Models
 {
-    public class KanbanContext : DbContext
+    public class KanbanContext : IdentityDbContext
     {
         public KanbanContext(DbContextOptions<KanbanContext> options)
             : base(options)
