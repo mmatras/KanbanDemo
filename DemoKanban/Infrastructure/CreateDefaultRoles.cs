@@ -6,7 +6,7 @@ namespace DemoKanban.Infrastructure
     {
         public static async Task CreateRoles(RoleManager<IdentityRole> roleManager)
         {
-            foreach (var roleName in Enum.GetNames<UserRoles>())
+            foreach (var roleName in Enum.GetNames<UserRole>())
             {
                 if(!await roleManager.RoleExistsAsync(roleName))
                 {

@@ -10,13 +10,13 @@
             <th>Email</th>
             <th>Current role</th>
             <th>Assign new role</th>
+            <th>Assign Date of Brith</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
-            var role = string.Join(",", user.Roles.Select(m => m.Name));
-            var currentRole = string.IsNullOrEmpty(role) ? "-" : role;
+            var currentRole = string.IsNullOrEmpty(user.Role?.Name) ? "-" : user.Role?.Name;
 
             <tr>
                 <td>@user.Id</td>
@@ -25,22 +25,30 @@
                 <td>@currentRole</td>
                 <td>
                     <form asp-action="AssignRole" method="post">
-                        <select name="role">
+                        <input name="userId" type="hidden" value="@user.Id" />
+                        <select name="roleName">
                             @foreach (var r in ViewData["availableRoles"] as IEnumerable<IdentityRole>)
                             {
-                                if(role == r.Name)
+                                if(user.Role?.Name == r.Name)
                                 {
-                                    <option selected value="@r.Id">@r.Name</option>
+                                    <option selected value="@r.Name">@r.Name</option>
                                 } 
                                 else
                                 {
-                                    <option value="@r.Id">@r.Name</option>
+                                    <option value="@r.Name">@r.Name</option>
                                 }
                             }
                         </select>
                         <button type="submit">Save</button>
                     </form>
 
+                </td>
+                <td>
+                    <form asp-action="AssignDateOfBirth" method="post">
+                        <input name="userId" type="hidden" value="@user.Id" />
+                        <input name="dateOfBirth" type="date" value="@user.DateOfBirth?.ToString("yyyy-MM-dd")" />
+                        <button type="submit">Save</button>
+                    </form>
                 </td>
             </tr>
         }

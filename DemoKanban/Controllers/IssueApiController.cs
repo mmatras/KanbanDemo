@@ -1,8 +1,10 @@
 ﻿using DemoKanban.Filters;
 using DemoKanban.Models;
 using DemoKanban.Models.Dto;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,7 +13,7 @@ namespace DemoKanban.Controllers
     //[Route("api/[controller]")]
     [Route("api/issue")]
     [ApiController]
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [AuditLogFilter]
     public class IssueApiController : ControllerBase
     {
@@ -25,6 +27,8 @@ namespace DemoKanban.Controllers
         [HttpGet]
         public IEnumerable<IssueDto> Get()
         {
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+
             var issues = context.Issues;
             List<IssueDto> result = issues.Select(i => new IssueDto
             {

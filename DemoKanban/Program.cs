@@ -1,10 +1,14 @@
 ﻿using DemoKanban.Infrastructure;
 using DemoKanban.Middlewares;
 using DemoKanban.Models;
+using DemoKanban.Policy;
 using DemoKanban.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +68,24 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 
+builder.Services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("MinimumAge", policy => policy.AddRequirements(new IsOverRequirement(18)));
+});
+
+builder.Services.AddAuthentication().AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true
+    };
+});
 
 builder.Services.AddRazorPages();
 

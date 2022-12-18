@@ -16,7 +16,7 @@ namespace DemoKanban.Controllers
     //}
 
     [AuditLogFilter]
-    [Authorize]
+    [Authorize(Policy = "MinimumAge")]
     public class IssueController : Controller
     {
         private readonly KanbanContext context;
@@ -28,7 +28,6 @@ namespace DemoKanban.Controllers
 
         //private readonly IStringLocalizer<IssueController> _stringLocalizer;
         //private readonly IEmailService _emailService;
-
         //public IssueController(IStringLocalizer<IssueController> stringLocalizer,
         //    IEmailService emailService)
         //{
@@ -41,6 +40,16 @@ namespace DemoKanban.Controllers
         //[OutputCache()]
         public IActionResult Index()
         {
+            var isAdmin = User.IsInRole("Admin");
+            //User.HasClaim()
+
+            var session = Request?.HttpContext?.Session;
+            if(session != null)
+            {
+                var xxx = session.Get("");
+                //session.Set("abc", "");
+            }
+
             var issues = context.Issues.ToList();
 
             return View(issues);
