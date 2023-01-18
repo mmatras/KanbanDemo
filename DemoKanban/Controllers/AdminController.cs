@@ -1,4 +1,5 @@
 ﻿using DemoKanban.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -25,15 +26,21 @@ namespace DemoKanban.Controllers
     {
         private readonly KanbanContext _context;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IAuthorizationService authorizationService;
 
-        public AdminController(KanbanContext context, UserManager<IdentityUser> userManager)
+        public AdminController(KanbanContext context, UserManager<IdentityUser> userManager,
+            IAuthorizationService authorizationService)
         {
             this._context = context;
             this.userManager = userManager;
+            this.authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> Users()
         {
+            var isAuthorized = await authorizationService.AuthorizeAsync(User, "MinimumAge");
+
+
             var users = (from u in _context.Users
                         join ur in _context.UserRoles on u.Id equals ur.UserId into urGourp
                         from m in urGourp.DefaultIfEmpty()

@@ -14,5 +14,15 @@ namespace DemoKanban.Infrastructure
                 }
             }
         }
+
+        public static async Task CreateUser(UserManager<IdentityUser> userManager, 
+            IConfiguration configuration)
+        {
+            await userManager.CreateAsync(new IdentityUser
+            {
+                UserName = "admin",
+                Email = "admin@admin.pl",
+            }, configuration["adminPassword"]);
+        }
     }
 }
