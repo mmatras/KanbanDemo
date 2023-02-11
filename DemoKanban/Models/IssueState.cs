@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Reinforced.Typings.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace DemoKanban.Models
 {
