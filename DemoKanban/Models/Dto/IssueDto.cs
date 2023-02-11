@@ -1,5 +1,8 @@
-﻿namespace DemoKanban.Models.Dto
+﻿using Reinforced.Typings.Attributes;
+
+namespace DemoKanban.Models.Dto
 {
+    [TsInterface(AutoI = true)]
     public class IssueDto
     {
         public int Id { get; set; } = 0;
