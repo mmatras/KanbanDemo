@@ -161,7 +161,7 @@ namespace DemoKanban.Controllers
 
         private IEnumerable<SelectListItem> GetPeopleSelectList()
         {
-            return KanbanContext.Data.People.Select(p =>
+            return _context.People.Select(p =>
             {
                 var displayName = p.DisplayName != "" ? $" ({p.DisplayName})" : "";
 
