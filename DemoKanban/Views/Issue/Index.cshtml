@@ -23,6 +23,7 @@
 
 <div class="row">
     <div class="col-md-4 list-group">
+        <div class="list-group-item column-header">Todo</div>
         @foreach (var item in todoItems)
         {
             var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
@@ -42,6 +43,7 @@
         }
     </div>
     <div class="col-md-4 list-group">
+        <div class="list-group-item column-header">Doing</div>
         @foreach (var item in doingItems)
         {
             var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
@@ -61,6 +63,7 @@
         }
     </div>
     <div class="col-md-4 list-group">
+        <div class="list-group-item column-header">Done</div>
         @foreach (var item in doneItems)
         {
             var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
@@ -126,3 +129,4 @@
         </div>
     </footer>
 }
+

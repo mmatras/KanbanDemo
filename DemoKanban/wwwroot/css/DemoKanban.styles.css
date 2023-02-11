@@ -22,3 +22,9 @@
 form > div {
     margin: 15px auto;
 }
+
+.column-header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 25px;
+}
