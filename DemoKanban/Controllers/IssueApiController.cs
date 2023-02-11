@@ -13,7 +13,7 @@ namespace DemoKanban.Controllers
     //[Route("api/[controller]")]
     [Route("api/issue")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [AuditLogFilter]
     public class IssueApiController : ControllerBase
     {
@@ -27,13 +27,18 @@ namespace DemoKanban.Controllers
         [HttpGet]
         public IEnumerable<IssueDto> Get()
         {
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            //var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
 
             var issues = context.Issues;
             List<IssueDto> result = issues.Select(i => new IssueDto
             {
+                Id = i.Id,
                 Title = i.Title,
-                /*...*/
+                Notes = i.Notes,
+                State = i.State,
+                IsUrgent = i.IsUrgent,
+                Deadline = i.Deadline,
+                AssignedToId = i.AssignedToId
             }).ToList();
 
             return result;
