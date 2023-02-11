@@ -16,6 +16,29 @@
     var doneItems = Model.Where(item => item.State == IssueState.Done);
 }
 
+@{
+    void TilesElements(IEnumerable<Issue> issues)
+    {
+        @foreach (var item in issues)
+        {
+            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
+            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
+
+            var isUrgent = item.IsUrgent ? "!" : "";
+
+            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
+                <div class="row title">
+                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
+                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
+                </div>
+            </a>
+        }
+    }
+}
+
 <p>
     <a asp-action="Create">Create New</a>
     @*<a href="@Url.Action("Create")">Create New</a>*@
@@ -24,62 +47,20 @@
 <div class="row">
     <div class="col-md-4 list-group">
         <div class="list-group-item column-header">Todo</div>
-        @foreach (var item in todoItems)
-        {
-            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
-            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
-
-            var isUrgent = item.IsUrgent ? "!" : "";
-
-            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
-                <div class="row title">
-                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
-                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
-                </div>
-            </a>
+        @{
+            TilesElements(todoItems); 
         }
     </div>
     <div class="col-md-4 list-group">
         <div class="list-group-item column-header">Doing</div>
-        @foreach (var item in doingItems)
-        {
-            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
-            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
-
-            var isUrgent = item.IsUrgent ? "!" : "";
-
-            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
-                <div class="row title">
-                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
-                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
-                </div>
-            </a>
+        @{
+            TilesElements(doingItems);
         }
     </div>
     <div class="col-md-4 list-group">
         <div class="list-group-item column-header">Done</div>
-        @foreach (var item in doneItems)
-        {
-            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
-            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
-
-            var isUrgent = item.IsUrgent ? "!" : "";
-
-            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
-                <div class="row title">
-                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
-                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
-                </div>
-            </a>
+        @{
+            TilesElements(doneItems);
         }
     </div>
 </div>
