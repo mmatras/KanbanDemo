@@ -10,6 +10,10 @@
     {
     @await Html.PartialAsync("_ErrorPartial", error)
     }
+
+    var todoItems = Model.Where(item => item.State == IssueState.Todo);
+    var doingItems = Model.Where(item => item.State == IssueState.Doing);
+    var doneItems = Model.Where(item => item.State == IssueState.Done);
 }
 
 <p>
@@ -17,7 +21,68 @@
     @*<a href="@Url.Action("Create")">Create New</a>*@
 </p>
 
-<table class="table">
+<div class="row">
+    <div class="col-md-4 list-group">
+        @foreach (var item in todoItems)
+        {
+            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
+            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
+
+            var isUrgent = item.IsUrgent ? "!" : "";
+
+            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
+                <div class="row title">
+                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
+                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="col-md-4 list-group">
+        @foreach (var item in doingItems)
+        {
+            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
+            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
+
+            var isUrgent = item.IsUrgent ? "!" : "";
+
+            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
+                <div class="row title">
+                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
+                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="col-md-4 list-group">
+        @foreach (var item in doneItems)
+        {
+            var assignedTo = item.AssignedTo?.DisplayName == "" && item.AssignedTo != Person.Empty
+            ? $"{item.AssignedTo.Name} {item.AssignedTo.Surname}" : item.AssignedTo?.DisplayName;
+
+            var isUrgent = item.IsUrgent ? "!" : "";
+
+            <a class="list-group-item" href="@Url.Action("Edit", new {id = item.Id})">
+                <div class="row title">
+                    <div class="col-md-8"><em>@item.Title</em><span class="isUrgent">@isUrgent</span></div>
+                    <div class="col-md-4 assigned-to">@(assignedTo ?? "-")</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="desc">Descriptoin:</span>@item.Notes</div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+
+@*<table class="table">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(m => m.Id)</th>
@@ -52,7 +117,7 @@
         }
     </tbody>
 
-</table>
+</table>*@
 
 @section footer {
     <footer class="border-top footer text-muted">

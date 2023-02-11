@@ -87,7 +87,7 @@ namespace DemoKanban.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, [FromForm] Issue issue)
+        public async Task<IActionResult> Edit(int id, [FromForm] Issue issue)
         {
             if (id != issue.Id)
             {
@@ -96,6 +96,10 @@ namespace DemoKanban.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewData["Action"] = "Edit";
+                ViewData["SubmitText"] = _stringLocalizer["SubmitText_Edit"];
+                ViewData["People"] = GetPeopleSelectList();
+
                 return View(issue);
             }
 
@@ -111,6 +115,9 @@ namespace DemoKanban.Controllers
             issueToBeUpdated.IsUrgent = issue.IsUrgent;
             issueToBeUpdated.Deadline = issue.Deadline;
             issueToBeUpdated.Notes = issue.Notes;
+
+            _context.Issues.Update(issueToBeUpdated);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }

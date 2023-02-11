@@ -18,7 +18,7 @@ namespace DemoKanban.Models
 
         //[ForeignKey("AssignedTo")]
         public int? AssignedToId { get; set; } 
-        public virtual Person AssignedTo { get; set; }
+        public virtual Person? AssignedTo { get; set; }
 
         //public Issue(string title)
         //{

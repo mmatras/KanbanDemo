@@ -13,7 +13,9 @@ namespace DemoKanban.Models
 
             var errorList = new List<ValidationResult>();
 
-            if (ctx.Issues.Any(m => m.Title == Title))
+            var issue = ctx.Issues.FirstOrDefault(m => m.Title == Title);
+
+            if (issue != null && issue.Id == 0)
             {
                 errorList.Add(new ValidationResult("Takie zadanie już istnieje", new[] { "Title" }));
             }

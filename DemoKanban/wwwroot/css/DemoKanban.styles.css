@@ -1,0 +1,24 @@
+﻿.desc {
+    font-weight: 600
+}
+
+.title {
+    margin: 15px auto;
+}
+
+.isUrgent {
+    color: orangered;
+    font-weight: 600;
+    font-size: 25px;
+    font-style: italic;
+}
+
+.assigned-to {
+    border: 1px dashed orange;
+    text-align: center;
+    margin-top: 10px;
+}
+
+form > div {
+    margin: 15px auto;
+}
