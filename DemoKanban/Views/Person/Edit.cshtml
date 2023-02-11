@@ -1,0 +1,31 @@
+﻿@model Person
+
+<h1>People <span>@Model.Name</span> <span>@Model.Surname</span></h1>
+
+<form method="post" asp-action="Edit">
+    
+    <input type="hidden" asp-for="Id" />
+    
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label asp-for="Surname"></label>
+        <input asp-for="Surname" />
+        <span asp-validation-for="Surname"></span>
+    </div>
+    <div>
+        <label asp-for="DisplayName"></label>
+        <input asp-for="DisplayName" />
+        <span asp-validation-for="DisplayName"></span>
+    </div>
+    <div>
+        <label asp-for="DateOfBirth"></label>
+        <input type="date" asp-for="DateOfBirth" />
+        <span asp-validation-for="DateOfBirth"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+</form>
