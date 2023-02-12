@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IPersonSelectDto, IssueState } from 'src/dtos/project';
 import { KanbanServiceService } from '../kanban-service.service';
 
@@ -22,7 +23,11 @@ export class IssuesEditComponent implements OnInit {
   public issueStates: { name: string; value: string }[] = [];
   public personSelect: IPersonSelectDto[] = [];
 
-  constructor(private kanbanService: KanbanServiceService) {
+  constructor(
+    private kanbanService: KanbanServiceService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
     for (const key in Object.keys(IssueState)) {
       const statusName = IssueState[key];
       if (typeof statusName === 'string')
@@ -31,6 +36,13 @@ export class IssuesEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.url.subscribe((url) => {
+      this.kanbanService.getIssue(parseInt(url[2].path)).subscribe((iss) => {
+        iss.deadline = iss.deadline.substring(0, 10);
+        this.issueForm.patchValue(iss);
+      });
+    });
+
     this.kanbanService
       .getPersonSelect()
       .subscribe((personSelect) => (this.personSelect = personSelect));
@@ -38,5 +50,11 @@ export class IssuesEditComponent implements OnInit {
 
   onSubmit() {
     console.log(this.issueForm.value);
+
+    if (this.issueForm.valid) {
+      this.kanbanService
+        .putIssue(this.issueForm.value)
+        .subscribe((result) => this.router.navigate(['']));
+    }
   }
 }

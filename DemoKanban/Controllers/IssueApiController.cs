@@ -56,7 +56,7 @@ namespace DemoKanban.Controllers
 
         // POST api/issue
         [HttpPost]
-        public IActionResult Post([FromBody] IssueDto issue)
+        public IActionResult Post([FromBody] EditIssueDto issue)
         {
             if (!ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace DemoKanban.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] IssueDto issue)
+        public IActionResult Put(int id, [FromBody] EditIssueDto issue)
         {
             if (id != issue.Id)
                 return BadRequest("id in url and in body doesn't match");
@@ -95,8 +95,9 @@ namespace DemoKanban.Controllers
             issueToBeUpdated.IsUrgent = issue.IsUrgent;
             issueToBeUpdated.Deadline = issue.Deadline;
             issueToBeUpdated.Notes = issue.Notes;
+            issueToBeUpdated.AssignedToId = issue.AssignedToId;
 
-            context.Issues.Add(issueToBeUpdated);
+            context.Issues.Update(issueToBeUpdated);
             context.SaveChanges();
 
             return Ok();
