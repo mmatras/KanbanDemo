@@ -38,7 +38,10 @@ namespace DemoKanban.Controllers
                 State = i.State,
                 IsUrgent = i.IsUrgent,
                 Deadline = i.Deadline,
-                AssignedToId = i.AssignedToId
+                AssignedToId = i.AssignedToId,
+                AssignedPersonDisplayName = i.AssignedTo == null ? "" : 
+                    string.IsNullOrEmpty(i.AssignedTo.DisplayName) ? $"{i.AssignedTo.Name} {i.AssignedTo.Surname}" : 
+                    i.AssignedTo.DisplayName
             }).ToList();
 
             return result;
