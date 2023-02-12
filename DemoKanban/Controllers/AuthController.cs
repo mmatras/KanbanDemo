@@ -43,6 +43,8 @@ namespace WebAPI.Auth.Controllers
         {
             var user = await signInManager.UserManager.FindByNameAsync(dto.Login);
 
+            if (user == null) return Unauthorized();
+
             var signInResult = 
                 await signInManager.PasswordSignInAsync(user, dto.Password, true, true);
 
