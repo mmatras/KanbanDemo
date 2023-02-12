@@ -1,0 +1,18 @@
+<ng-container *ngIf="issue">
+  <a class="list-group-item tile" [routerLink]="['/issue/edit/', issue.id]">
+    <div class="row title">
+      <div class="col-md-8">
+        <em>{{ issue.title }}</em>
+        <span class="isUrgent">{{ issue.isUrgent | isUrgent }}</span>
+      </div>
+      <div class="col-md-4 assigned-to">
+        {{ issue.assignedPersonDisplayName | assignedTo }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <span class="desc">Descriptoin:</span>{{ issue.notes }}
+      </div>
+    </div>
+  </a>
+</ng-container>

@@ -1,0 +1,62 @@
+<form [formGroup]="issueForm" (ngSubmit)="onSubmit()">
+  <p>Form Status: {{ issueForm.status }}</p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input
+          class="form-control"
+          name="title"
+          type="text"
+          formControlName="title"
+        />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="state">State:</label>
+        <select class="form-control" formControlName="state">
+          <option *ngFor="let status of issueStates" [ngValue]="status.value">
+            {{ status.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="notes">Notes:</label>
+    <textarea
+      class="form-control"
+      name="notes"
+      formControlName="notes"
+    ></textarea>
+  </div>
+  <div class="checkbox">
+    <input
+      class="checkbox"
+      name="isUrgent"
+      type="checkbox"
+      formControlName="isUrgent"
+    />
+    <label for="isUrgent">IsUrgent</label>
+  </div>
+  <div class="form-group">
+    <label for="deadline">Deadline:</label>
+    <input
+      class="form-control"
+      name="deadline"
+      type="date"
+      formControlName="deadline"
+    />
+  </div>
+  <div class="form-group">
+    <label for="assignedTo">Assigned To:</label>
+    <select class="form-control" formControlName="assignedToId">
+      <option *ngFor="let person of personSelect" [ngValue]="person.id">
+        {{ person.displayName }}
+      </option>
+    </select>
+  </div>
+  <button class="btn btn-primary" type="submit">Save</button>
+</form>
