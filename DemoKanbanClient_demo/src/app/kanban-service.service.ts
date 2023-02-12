@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IEditIssueDto, IIssueDto, IPersonSelectDto } from 'src/dtos/project';
+import {
+  IAccecTokenDto,
+  IEditIssueDto,
+  IIssueDto,
+  ILoginDto,
+  IPersonSelectDto,
+} from 'src/dtos/project';
 import { Observable } from 'rxjs';
 
 //ng generate service kanban-service
@@ -29,5 +35,9 @@ export class KanbanServiceService {
 
   postIssue(issue: IEditIssueDto) {
     return this.http.post('/api/issue', issue);
+  }
+
+  userAuth(login: ILoginDto): Observable<IAccecTokenDto> {
+    return this.http.post<IAccecTokenDto>('api/auth', login);
   }
 }

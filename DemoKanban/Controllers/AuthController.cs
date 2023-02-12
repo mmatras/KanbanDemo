@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using Reinforced.Typings.Attributes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,11 +11,15 @@ using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredCla
 
 namespace WebAPI.Auth.Controllers
 {
+    [TsInterface(AutoI = true)]
     public class LoginDto
     {
         public string Login { get; set; }
         public string Password { get; set; }
     }
+
+    [TsInterface(AutoI = true)]
+    public record AccecTokenDto(string Value);
 
     [ApiController]
     [Route("api/auth")]
@@ -67,7 +72,7 @@ namespace WebAPI.Auth.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptior);
 
-            return Ok(tokenHandler.WriteToken(token));
+            return Ok(new AccecTokenDto(tokenHandler.WriteToken(token)));
         }
     }
 }

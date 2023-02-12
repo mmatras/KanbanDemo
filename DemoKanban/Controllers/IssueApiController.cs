@@ -13,7 +13,7 @@ namespace DemoKanban.Controllers
     //[Route("api/[controller]")]
     [Route("api/issue")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [AuditLogFilter]
     public class IssueApiController : ControllerBase
     {

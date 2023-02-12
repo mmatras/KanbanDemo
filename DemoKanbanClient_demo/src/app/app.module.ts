@@ -8,8 +8,10 @@ import { IssuesEditComponent } from './issues-edit/issues-edit.component';
 import { IsUrgentPipe } from './is-urgent.pipe';
 import { AssignedToPipe } from './assigned-to.pipe';
 import { TileComponent } from './tile/tile.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
+import { JwtAuthInterceptor } from './jwt-auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     IsUrgentPipe,
     AssignedToPipe,
     TileComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtAuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

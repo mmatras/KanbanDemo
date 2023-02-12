@@ -2,6 +2,15 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+export interface ILoginDto
+{
+	login: string;
+	password: string;
+}
+export interface IAccecTokenDto
+{
+	value: string;
+}
 export interface IEditIssueDto
 {
 	id: number;
