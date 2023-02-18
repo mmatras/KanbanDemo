@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { JwtAuthInterceptor } from './jwt-auth.interceptor';
+import { UsbTestComponent } from './usb-test/usb-test.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { JwtAuthInterceptor } from './jwt-auth.interceptor';
     AssignedToPipe,
     TileComponent,
     LoginComponent,
+    UsbTestComponent,
   ],
   imports: [
     BrowserModule,

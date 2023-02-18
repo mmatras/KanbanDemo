@@ -14,6 +14,6 @@ namespace DemoKanban.Models.Dto
         public bool IsUrgent { get; set; }
         public DateTime? Deadline { get; set; }
         public int? AssignedToId { get; set; }
-        public string AssignedPersonDisplayName { get; internal set; }
+        public string AssignedPersonDisplayName { get; set; }
     }
 }

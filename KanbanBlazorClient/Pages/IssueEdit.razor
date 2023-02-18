@@ -1,0 +1,80 @@
+﻿@page "/issue-edit/{id:int}"
+@inject HttpClient Http;
+@inject NavigationManager Navigation;
+
+@if(Issue != null)
+{
+    <EditForm Model="@Issue" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Issue.Title">Title:</label>
+                    <InputText class="form-control" @bind-Value="Issue.Title" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Issue.State">Status:</label>
+                    <InputSelect class="form-control" @bind-Value="Issue.State">
+                        @foreach (var value in Enum.GetValues(typeof(IssueState)))
+                        {
+                            <option value="@value">@Enum.GetName(typeof(IssueState), value)</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Issue.Notes">Description:</label>
+            <InputTextArea class="form-control" @bind-Value="Issue.Notes" />
+        </div>
+        <div class="checkbox">
+            <InputCheckbox class="checkbox" @bind-Value="Issue.IsUrgent" />
+            <label for="Issue.IsUrgent">Is Urgent</label>
+        </div>
+        <div class="form-group">
+            <label for="Issue.Deadline">Deadline:</label>
+            <InputDate Type="InputDateType.Date" @bind-Value="Issue.Deadline" />
+        </div>
+        <div class="form-group">
+            <label for="Issue.AssignedToId">Assigned To:</label>
+            <InputSelect class="form-control" @bind-Value="Issue.AssignedToId">
+                <option value="">Assign person</option>
+                @foreach (var person in personSelect ?? Enumerable.Empty<PersonSelectDto>())
+                {
+                    <option value="@person.Id">@person.DisplayName</option>
+                }
+            </InputSelect>
+        </div>
+        <button type="submit">Save</button>
+
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    private IEnumerable<PersonSelectDto>? personSelect; 
+
+    private EditIssueDto? Issue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        personSelect = await Http.GetFromJsonAsync<IEnumerable<PersonSelectDto>>("/api/person/personSelect");
+        Issue = await Http.GetFromJsonAsync<EditIssueDto>($"/api/issue/{Id}");
+    }
+
+    private async Task HandleSubmit()
+    {
+        var result = await Http.PutAsJsonAsync<EditIssueDto>($"/api/issue/{Issue.Id}", Issue);
+
+        if (result.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            Navigation.NavigateTo("issues-view");
+        }
+    }
+}

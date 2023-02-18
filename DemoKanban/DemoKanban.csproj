@@ -34,6 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KanbanDemo.Dtos\KanbanDemo.Dtos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

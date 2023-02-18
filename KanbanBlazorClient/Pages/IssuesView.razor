@@ -1,0 +1,60 @@
+﻿@page "/issues-view"
+@inject HttpClient Http
+
+<input @bind="@query" @bind:event="oninput" onchange="@OnInputChange()" />
+
+<div class="row">
+    <div class="col-md-4 list-group">
+        <h3 class="tile-header">Todo</h3>
+        @foreach (var issue in IssuesTodo ?? Enumerable.Empty<IssueDto>())
+        {
+            <Tile Issue="@issue" />
+        }
+    </div>
+    <div class="col-md-4 list-group">
+        <h3 class="tile-header">Doing</h3>
+        @foreach (var issue in IssuesDoing ?? Enumerable.Empty<IssueDto>())
+        {
+            <Tile Issue="@issue" />
+        }
+    </div>
+    <div class="col-md-4 list-group">
+        <h3 class="tile-header">Done</h3>
+        @foreach (var issue in IssuesDone ?? Enumerable.Empty<IssueDto>())
+        {
+            <Tile Issue="@issue" />
+        }
+    </div>
+</div>
+
+@code {
+    public IEnumerable<IssueDto>? IssuesTodo { get; set; } = new List<IssueDto>();
+    public IEnumerable<IssueDto>? IssuesDoing { get; set; } = new List<IssueDto>();
+    public IEnumerable<IssueDto>? IssuesDone { get; set; } = new List<IssueDto>();
+
+    private string? query;
+
+    private async Task OnInputChange()
+    {
+        await GetIssues();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetIssues();
+    }
+
+    private async Task GetIssues()
+    {
+        var uri = string.IsNullOrWhiteSpace(query) ? "/api/issue" : $"/api/issue?query={query}";
+
+        var issues = await Http.GetFromJsonAsync<IEnumerable<IssueDto>>(uri);
+
+        if (issues != null)
+        {
+            IssuesTodo = issues.Where(issue => issue.State == IssueState.Todo).ToList();
+            IssuesDoing = issues.Where(issue => issue.State == IssueState.Doing).ToList();
+            IssuesDone = issues.Where(issue => issue.State == IssueState.Done).ToList();
+        }
+    }
+}

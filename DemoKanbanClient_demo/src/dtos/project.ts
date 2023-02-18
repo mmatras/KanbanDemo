@@ -11,32 +11,6 @@ export interface IAccecTokenDto
 {
 	value: string;
 }
-export interface IEditIssueDto
-{
-	id: number;
-	title: string;
-	notes: string;
-	state: IssueState;
-	isUrgent: boolean;
-	deadline: string;
-	assignedToId: number;
-}
-export interface IIssueDto
-{
-	id: number;
-	title: string;
-	notes: string;
-	state: IssueState;
-	isUrgent: boolean;
-	deadline: string;
-	assignedToId: number;
-	assignedPersonDisplayName: string;
-}
-export interface IPersonSelectDto
-{
-	id: number;
-	displayName: string;
-}
 export enum IssueState {
 	Todo = 0,
 	Doing = 1,

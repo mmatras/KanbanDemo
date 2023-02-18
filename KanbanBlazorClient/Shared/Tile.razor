@@ -1,0 +1,25 @@
+﻿<a class="list-group-item tile" href="@GetPathToIssue(Issue.Id)">
+    <div class="row title">
+        <div class="col-md-8">
+            <em>@Issue.Title</em>
+            <span class="isUrgent">@(Issue.IsUrgent ? "!" : "")</span>
+        </div>
+        <div class="col-md-4 assigned-to">
+            @(string.IsNullOrEmpty(Issue.AssignedPersonDisplayName) ? "-" : Issue.AssignedPersonDisplayName)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="desc">Description:</span>@Issue.Notes
+        </div>
+    </div>
+</a>
+
+
+@code {
+    string GetPathToIssue(int id) => $"/issue-edit/{id}";
+
+    [Parameter]
+    [EditorRequired]
+    public IssueDto Issue { get; set; }
+}

@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebAppli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{C8321227-1466-4B3D-BD27-FB4A999A9822}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI.Auth", "WebAPI.Auth\WebAPI.Auth.csproj", "{28D8679A-D129-40DC-967C-339C3A092007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.Auth", "WebAPI.Auth\WebAPI.Auth.csproj", "{28D8679A-D129-40DC-967C-339C3A092007}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBlazorClient", "KanbanBlazorClient\KanbanBlazorClient.csproj", "{B01BC870-D0B2-45B2-B532-247E02B50E83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanDemo.Dtos", "KanbanDemo.Dtos\KanbanDemo.Dtos.csproj", "{43DF8838-6C79-4B77-B761-D240A5043CCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{28D8679A-D129-40DC-967C-339C3A092007}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28D8679A-D129-40DC-967C-339C3A092007}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28D8679A-D129-40DC-967C-339C3A092007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B01BC870-D0B2-45B2-B532-247E02B50E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01BC870-D0B2-45B2-B532-247E02B50E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01BC870-D0B2-45B2-B532-247E02B50E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01BC870-D0B2-45B2-B532-247E02B50E83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43DF8838-6C79-4B77-B761-D240A5043CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43DF8838-6C79-4B77-B761-D240A5043CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43DF8838-6C79-4B77-B761-D240A5043CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43DF8838-6C79-4B77-B761-D240A5043CCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

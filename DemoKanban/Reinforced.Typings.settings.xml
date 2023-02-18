@@ -105,4 +105,9 @@
 		<RtAdditionalAssembly Include="$(SolutionDir)\AnotherProject\bin\Debug\AnotherProject.dll"/>
 	</ItemGroup>
 	-->
+	<ItemGroup>
+		<RtAdditionalAssembly Include="DemoKanban.dll" />
+		<RtAdditionalAssembly Include="DemoKanban.Dtos.dll" />
+	</ItemGroup>
+
 </Project>
