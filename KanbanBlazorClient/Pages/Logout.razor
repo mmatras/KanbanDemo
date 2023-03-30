@@ -1,0 +1,14 @@
+﻿@page "/logout"
+@using KanbanBlazorClient.Auth;
+@inject ITokenService TokenService
+@inject NavigationManager Navigation
+@inject CustomAuthenticationStateProvider AuthProvider
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await TokenService.RemoveToken();
+        AuthProvider.StateChanged();
+        Navigation.NavigateTo("/");
+    }
+}

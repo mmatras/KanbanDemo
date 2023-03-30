@@ -143,8 +143,8 @@ app.MapControllerRoute(name: "blog_section",
 using(var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
 {
     var kanbanContext = serviceScope.ServiceProvider.GetRequiredService<KanbanContext>();
-    //kanbanContext.Database.Migrate();
-    kanbanContext.Database.EnsureCreated();
+    kanbanContext.Database.Migrate();
+    //kanbanContext.Database.EnsureCreated();
 
     var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
     if(roleManager != null )

@@ -1,6 +1,18 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation;
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        @*<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />*@
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <text>Authorizing user, please wait...</text>
+            </Authorizing>
+            <NotAuthorized>
+                @{
+                    Navigation.NavigateTo("login");
+                }
+            </NotAuthorized>
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>

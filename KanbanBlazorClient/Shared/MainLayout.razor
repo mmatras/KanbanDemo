@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using KanbanBlazorClient.Pages
+@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -8,6 +9,7 @@
     <main>
         <div class="top-row px-4">
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <UserComponent />
         </div>
 
         <article class="content px-4">

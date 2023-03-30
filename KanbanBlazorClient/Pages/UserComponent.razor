@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <span>Hello! <a href="/logout">(Logout)</a></span>
+    </Authorized>
+    <NotAuthorized>
+        <span><a href="/login">(Login)</a><a href="/register">(Register)</a></span>
+    </NotAuthorized>
+</AuthorizeView>

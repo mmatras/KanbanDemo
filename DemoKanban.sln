@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebAppli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.Auth", "WebAPI.Auth\WebAPI.Auth.csproj", "{28D8679A-D129-40DC-967C-339C3A092007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBlazorClient", "KanbanBlazorClient\KanbanBlazorClient.csproj", "{B01BC870-D0B2-45B2-B532-247E02B50E83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KanbanBlazorClient", "KanbanBlazorClient\KanbanBlazorClient.csproj", "{B01BC870-D0B2-45B2-B532-247E02B50E83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanDemo.Dtos", "KanbanDemo.Dtos\KanbanDemo.Dtos.csproj", "{43DF8838-6C79-4B77-B761-D240A5043CCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KanbanDemo.Dtos", "KanbanDemo.Dtos\KanbanDemo.Dtos.csproj", "{43DF8838-6C79-4B77-B761-D240A5043CCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

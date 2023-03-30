@@ -1,0 +1,45 @@
+﻿@page "/login"
+@using KanbanBlazorClient.Auth;
+@using KanbanBlazorClient.Dtos;
+@using KanbanDemo.Dtos;
+@inject IAuthService AuthService;
+@inject ITokenService TokenService; 
+@inject NavigationManager Navigation;
+@inject CustomAuthenticationStateProvider authProvider;
+
+<h3>Login</h3>
+
+<p>@message</p>
+
+<EditForm Model="login" OnValidSubmit="OnValid">
+    <div class="form-group">
+        <label>Login: </label>
+        <InputText class="form-control" @bind-Value="login.Login" />
+    </div>
+    <div class="form-group">
+        <label>Password: </label>
+        <InputText type="password" class="form-control" @bind-Value="login.Password" />
+    </div>
+    <button>Login</button>
+</EditForm>
+
+@code {
+    LoginComponentDto login = new LoginComponentDto("", "");
+    string message = string.Empty;
+
+    private async Task OnValid()
+    {
+        var result = await AuthService.Login(login);
+
+        if(result.Status == LoginStatus.Success)
+        {
+            await TokenService.SetToken(result.AccessToken, result.Expires);
+            authProvider.StateChanged();
+            Navigation.NavigateTo("issues-view");
+        } 
+        else
+        {
+            message = result.ErrorMessage;  
+        }
+    }
+}

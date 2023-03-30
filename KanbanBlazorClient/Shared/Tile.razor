@@ -1,11 +1,12 @@
-﻿<a class="list-group-item tile" href="@GetPathToIssue(Issue.Id)">
+﻿@using KanbanBlazorClient.Services;
+<a class="list-group-item tile" href="@GetPathToIssue(Issue.Id)">
     <div class="row title">
         <div class="col-md-8">
             <em>@Issue.Title</em>
             <span class="isUrgent">@(Issue.IsUrgent ? "!" : "")</span>
         </div>
         <div class="col-md-4 assigned-to">
-            @(string.IsNullOrEmpty(Issue.AssignedPersonDisplayName) ? "-" : Issue.AssignedPersonDisplayName)
+            @(string.IsNullOrEmpty(Issue.AssignedToDisplayName) ? "-" : Issue.AssignedToDisplayName)
         </div>
     </div>
     <div class="row">
@@ -21,5 +22,5 @@
 
     [Parameter]
     [EditorRequired]
-    public IssueDto Issue { get; set; }
+    public IssueViewDto Issue { get; set; }
 }

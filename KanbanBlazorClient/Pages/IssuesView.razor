@@ -1,26 +1,32 @@
 ﻿@page "/issues-view"
-@inject HttpClient Http
+@using KanbanBlazorClient.Services;
+@using KanbanBlazorClient.Store;
+@using Microsoft.AspNetCore.Authorization;
+@inject IKanbanDemoService kanbanService;
+@inject FilterStore filterStore;
 
-<input @bind="@query" @bind:event="oninput" onchange="@OnInputChange()" />
+@attribute [Authorize]
+
+<FilterComponent />
 
 <div class="row">
     <div class="col-md-4 list-group">
         <h3 class="tile-header">Todo</h3>
-        @foreach (var issue in IssuesTodo ?? Enumerable.Empty<IssueDto>())
+        @foreach (var issue in IssuesTodo ?? Enumerable.Empty<IssueViewDto>())
         {
             <Tile Issue="@issue" />
         }
     </div>
     <div class="col-md-4 list-group">
         <h3 class="tile-header">Doing</h3>
-        @foreach (var issue in IssuesDoing ?? Enumerable.Empty<IssueDto>())
+        @foreach (var issue in IssuesDoing ?? Enumerable.Empty<IssueViewDto>())
         {
             <Tile Issue="@issue" />
         }
     </div>
     <div class="col-md-4 list-group">
         <h3 class="tile-header">Done</h3>
-        @foreach (var issue in IssuesDone ?? Enumerable.Empty<IssueDto>())
+        @foreach (var issue in IssuesDone ?? Enumerable.Empty<IssueViewDto>())
         {
             <Tile Issue="@issue" />
         }
@@ -28,13 +34,11 @@
 </div>
 
 @code {
-    public IEnumerable<IssueDto>? IssuesTodo { get; set; } = new List<IssueDto>();
-    public IEnumerable<IssueDto>? IssuesDoing { get; set; } = new List<IssueDto>();
-    public IEnumerable<IssueDto>? IssuesDone { get; set; } = new List<IssueDto>();
+    public IEnumerable<IssueViewDto>? IssuesTodo { get; set; } = new List<IssueViewDto>();
+    public IEnumerable<IssueViewDto>? IssuesDoing { get; set; } = new List<IssueViewDto>();
+    public IEnumerable<IssueViewDto>? IssuesDone { get; set; } = new List<IssueViewDto>();
 
-    private string? query;
-
-    private async Task OnInputChange()
+    private async Task OnKeyUpHandler()
     {
         await GetIssues();
     }
@@ -42,13 +46,16 @@
     protected override async Task OnInitializedAsync()
     {
         await GetIssues();
+
+        filterStore.OnChnage += async () =>
+        {
+            await GetIssues();
+        };
     }
 
     private async Task GetIssues()
     {
-        var uri = string.IsNullOrWhiteSpace(query) ? "/api/issue" : $"/api/issue?query={query}";
-
-        var issues = await Http.GetFromJsonAsync<IEnumerable<IssueDto>>(uri);
+        var issues = await kanbanService.GetIssues(filterStore.Query);
 
         if (issues != null)
         {
@@ -56,5 +63,6 @@
             IssuesDoing = issues.Where(issue => issue.State == IssueState.Doing).ToList();
             IssuesDone = issues.Where(issue => issue.State == IssueState.Done).ToList();
         }
+        this.StateHasChanged();
     }
 }

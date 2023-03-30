@@ -1,0 +1,14 @@
+﻿@using KanbanBlazorClient.Store;
+@inject FilterStore filterStore;
+
+<h3>FilterComponent</h3>
+
+<div>
+    <input @bind="@filterStore.Query" @bind:event="oninput" onkeyup="@OnKeyUp" />
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<KeyboardEventArgs> OnKeyUp {get; set;}
+}

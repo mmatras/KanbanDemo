@@ -1,4 +1,5 @@
 ﻿using DemoKanban.Models;
+using KanbanDemo.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -11,16 +12,6 @@ using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredCla
 
 namespace WebAPI.Auth.Controllers
 {
-    [TsInterface(AutoI = true)]
-    public class LoginDto
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-    }
-
-    [TsInterface(AutoI = true)]
-    public record AccecTokenDto(string Value);
-
     [ApiController]
     [Route("api/auth")]
     public class AuthController : ControllerBase
@@ -55,15 +46,17 @@ namespace WebAPI.Auth.Controllers
             var audience = configuration["Jwt:Audience"];
             var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
 
+            var expires = DateTime.UtcNow.AddDays(1);
+
             var tokenDescriptior = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("Id", "1"),
-                    new Claim(ClaimTypes.Email, "daniel@test.pl"),
-                    new Claim(JwtRegisteredClaimNames.Sub, "Daniel")
+                    new Claim("Id", user.Id),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
                 }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = expires,
                 Issuer = issuer,
                 Audience = audience,
                 SigningCredentials = new SigningCredentials(
@@ -74,7 +67,7 @@ namespace WebAPI.Auth.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptior);
 
-            return Ok(new AccecTokenDto(tokenHandler.WriteToken(token)));
+            return Ok(new AccessTokenDto(tokenHandler.WriteToken(token), expires));
         }
     }
 }

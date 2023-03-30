@@ -15,6 +15,7 @@ namespace DemoKanban.Models
         public DbSet<Issue> Issues => Set<Issue>();
         public DbSet<Person> People => Set<Person>(); 
         public DbSet<AuditLog> AuditLog=> Set<AuditLog>();
+        public DbSet<File> Files => Set<File>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
